@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<server>
+	<!-- Optional user-defined variables for substitution -->
+	<vars>
+		<item name="ROOT">/var/www/</item>
+	</vars>
+
+	<!-- required -->
+	<net>
+		<address>localhost</address>
+		<port>9000</port>
+		<protocol>tcp</protocol>
+	</net>
+
+	<!-- user configuration -->
+	<user>
+		<page path="/">
+			<title>My page</title>
+			<serve>%ROOT%/index.html</serve>
+		</page>
+	</user>
+</server>

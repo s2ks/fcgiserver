@@ -1,12 +1,12 @@
-package server
+package fcgiserver
 
 import (
+	"fmt"
 	"log"
 	"net"
 	"net/http"
 	"net/http/fcgi"
 	"time"
-	"fmt"
 )
 
 type Handler interface {

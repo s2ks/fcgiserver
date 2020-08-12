@@ -1,11 +1,11 @@
-package server
+package fcgiserver
 
 import (
 	"fmt"
 	"log"
 	"net/http"
 
-	"willemvanbeek.nl/backend/logger"
+	"github.com/s2ks/fcgiserver/logger"
 )
 
 func LogRequest(r *http.Request) {
