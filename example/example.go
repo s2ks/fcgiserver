@@ -79,7 +79,7 @@ func main() {
 		logger.Fatal(err)
 	}
 
-	buf, err := config.GetUserConfFromXmlFile("example.xml")
+	raw, err := config.GetUserXmlFromFile("example.xml")
 
 	if err != nil {
 		logger.Fatal(err)
@@ -87,7 +87,7 @@ func main() {
 
 	myconfig := new(MyConfig)
 
-	err = xml.Unmarshal(buf, myconfig)
+	err = xml.Unmarshal(raw, myconfig)
 
 	if err != nil {
 		logger.Fatal(err)

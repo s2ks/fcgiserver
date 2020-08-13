@@ -113,7 +113,7 @@ func GetServerConfFromXmlFile(path string) (*XmlConf, error) {
 /*
 	TODO support for an <include/> tag
 */
-func GetUserConfFromXml(raw []byte) ([]byte, error) {
+func GetUserXmlFrom(raw []byte) ([]byte, error) {
 	vars, err := GetVarsFromXml(raw)
 
 	if err != nil {
@@ -145,12 +145,12 @@ func GetUserConfFromXml(raw []byte) ([]byte, error) {
 	return dest, nil
 }
 
-func GetUserConfFromXmlFile(path string) ([]byte, error) {
+func GetUserXmlFromFile(path string) ([]byte, error) {
 	buf, err := util.ReadFromFile(path)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return GetUserConfFromXml(buf)
+	return GetUserXmlFrom(buf)
 }
