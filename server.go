@@ -6,7 +6,6 @@ import (
 	"net"
 	"net/http"
 	"net/http/fcgi"
-	"time"
 )
 
 type Handler interface {
@@ -20,8 +19,6 @@ type FcgiServer struct {
 	Address  string
 	Port     string
 	Protocol string
-
-	ExecInterval time.Duration
 }
 
 func (s *FcgiServer) Register(path string, h Handler) {
