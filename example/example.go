@@ -11,7 +11,7 @@ import (
 	"github.com/s2ks/fcgiserver/util"
 )
 
-type MyConfigPage struct {
+type MyPageConfig struct {
 	Path    string `xml:"path,attr"`
 	Title   string `xml:"title"`
 	SrcFile string `xml:"serve"`
@@ -19,17 +19,17 @@ type MyConfigPage struct {
 
 type MyConfig struct {
 	Name xml.Name       `xml:"user"`
-	Page []MyConfigPage `xml:"page"`
+	Page []MyPageConfig `xml:"page"`
 }
 
-type MyPage struct {
+type MyPageHandler struct {
 	Path string
 
 	config *MyConfig
-	page   *MyConfigPage
+	page   *MyPageConfig
 }
 
-func (conf *MyConfig) GetPageFor(path string) *MyConfigPage {
+func (conf *MyConfig) GetPageFor(path string) *MyPageConfig {
 	for _, page := range conf.Page {
 		if page.Path == path {
 			return &page
@@ -39,7 +39,7 @@ func (conf *MyConfig) GetPageFor(path string) *MyConfigPage {
 	return nil
 }
 
-func (p *MyPage) Setup(path string) error {
+func (p *MyPageHandler) Setup(path string) error {
 	p.Path = path
 	p.page = p.config.GetPageFor(path)
 
@@ -50,7 +50,7 @@ func (p *MyPage) Setup(path string) error {
 	return nil
 }
 
-func (p *MyPage) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (p *MyPageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if p.Path != r.URL.Path {
 		http.NotFound(w, r)
 		return
@@ -93,7 +93,7 @@ func main() {
 		logger.Fatal(err)
 	}
 
-	server.Register("/", &MyPage{config: myconfig})
+	server.Register("/", &MyPageHandler{config: myconfig})
 
 	logger.Fatal(server.Serve())
 }
