@@ -16,7 +16,7 @@ const (
 )
 
 var (
-	loglevel = LogLevelWarning
+	loglevel = LogLevelInfo
 	logger   = log.New(os.Stderr, "", log.LstdFlags)
 )
 
