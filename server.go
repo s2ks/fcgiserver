@@ -2,10 +2,11 @@ package fcgiserver
 
 import (
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 	"net/http/fcgi"
+
+	"github.com/s2ks/fcgiserver/logger"
 )
 
 type Handler interface {
@@ -26,11 +27,11 @@ func (s *FcgiServer) Register(path string, h Handler) {
 	err := h.Setup(path)
 
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
 	mux.Handle(path, h)
-	log.Print("Registered handler for " + path)
+	logger.Infof("Registered handler for %s", path)
 }
 
 func New(address string, port string, protocol string) (*FcgiServer, error) {

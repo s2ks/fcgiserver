@@ -1,19 +1,17 @@
 package fcgiserver
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/s2ks/fcgiserver/logger"
 )
 
 func LogRequest(r *http.Request) {
-	log.Print(fmt.Sprintf("\tHTTP Method: %s", r.Method))
-	log.Print(fmt.Sprintf("\tProtocol version: %s", r.Proto))
-	log.Print(fmt.Sprintf("\tHeader: %+v", r.Header))
-	log.Print(fmt.Sprintf("\tClient: %s", r.RemoteAddr))
-	log.Print(fmt.Sprintf("\tContent length: %d", r.ContentLength))
+	logger.Infof("HTTP Method: %s", r.Method)
+	logger.Infof("Protocol version: %s", r.Proto)
+	logger.Infof("Header: %+v", r.Header)
+	logger.Infof("Client: %s", r.RemoteAddr)
+	logger.Infof("Content length: %d", r.ContentLength)
 }
 
 func LogBody(r *http.Request, l uint64) {
@@ -25,7 +23,7 @@ func LogBody(r *http.Request, l uint64) {
 		return
 	}
 
-	log.Printf("Body (%v byte(s)): %s", l, string(body))
+	logger.Infof("Body (%v byte(s)): %s", l, string(body))
 }
 
 func InternalServerError(w http.ResponseWriter, r *http.Request, err error) {
