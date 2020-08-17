@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 
 	"github.com/s2ks/fcgiserver/util"
+	"github.com/s2ks/fcgiserver/logger"
 )
 
 /* Defines structures to unmarshal from xml config file */
@@ -46,6 +47,8 @@ type UserConf struct {
 
 func GetVarsFromXml(raw []byte) (*VarsXml, error) {
 	vars := new(VarsXml)
+
+	logger.Debugf("Unmarshalling variables from: %s", raw)
 
 	err := xml.Unmarshal(raw, vars)
 
@@ -91,6 +94,8 @@ func GetServerConfFromXml(raw []byte) (*XmlConf, error) {
 		return nil, err
 	}
 
+	logger.Debugf("Unmarshalling server config from: %s", buf)
+
 	err = xml.Unmarshal(buf, config)
 
 	if err != nil {
@@ -127,6 +132,8 @@ func GetUserXmlFrom(raw []byte) ([]byte, error) {
 	}
 
 	userConf := new(UserConf)
+
+	logger.Debugf("Getting raw user inner xml from: %s", buf)
 
 	/* Get the raw inner xml of <user> */
 	err = xml.Unmarshal(buf, userConf)

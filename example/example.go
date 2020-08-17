@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"net/http"
+	"flag"
 
 	"github.com/s2ks/fcgiserver"
 	"github.com/s2ks/fcgiserver/config"
@@ -67,7 +68,16 @@ func (p *MyPageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	conf, err := config.GetServerConfFromXmlFile("example.xml")
+	var debug = flag.Bool("debug", false, "Enable debug logging")
+	var configpath = flag.String("config", "example.xml", "Path to the configuration file")
+
+	flag.Parse()
+
+	if *debug == true {
+		logger.LogLevel(logger.LogLevelDebug)
+	}
+
+	conf, err := config.GetServerConfFromXmlFile(*configpath)
 
 	if err != nil {
 		logger.Fatal(err)
@@ -79,7 +89,7 @@ func main() {
 		logger.Fatal(err)
 	}
 
-	raw, err := config.GetUserXmlFromFile("example.xml")
+	raw, err := config.GetUserXmlFromFile(*configpath)
 
 	if err != nil {
 		logger.Fatal(err)
