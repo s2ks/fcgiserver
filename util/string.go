@@ -8,8 +8,8 @@ import (
 func ByteSubstituteMap(raw []byte, keyval map[string]string, delim string) ([]byte, error) {
 	var err error
 
-	buf := make([]byte, len(raw))
-	copy(buf, raw)
+	dest := make([]byte, len(raw))
+	copy(dest, raw)
 
 	for key, val := range keyval {
 		pattern := make([]byte, len(key)+(2*len(delim)))
@@ -17,32 +17,41 @@ func ByteSubstituteMap(raw []byte, keyval map[string]string, delim string) ([]by
 		w += copy(pattern[w:], []byte(key))
 		w += copy(pattern[w:], []byte(delim))
 
-		keycount := strings.Count(string(buf), string(pattern))
+		keycount := strings.Count(string(dest), string(pattern))
 
 		if keycount < 1 {
-			err = fmt.Errorf("Pattern: \"%v\" not found in string: \"%v\"", string(pattern), string(buf))
+			err = fmt.Errorf("Pattern: \"%v\" not found in string: \"%v\"", string(pattern), string(dest))
 			continue
 		}
 
-		dest := make([]byte, len(buf)+(keycount*(len(val)-w)))
+		var buf []byte
+
+		/* if val is longer than pattern we need a buffer big enough to fit the final result */
+		if len(val) > w {
+			buf = make([]byte, len(dest)+(keycount*(len(val)-w)))
+		} else {
+		/* otherwise just use dest*/
+			buf = dest
+		}
 
 		for i := 0; i < keycount; i++ {
-			keystart := strings.Index(string(buf), string(pattern))
+			keystart := strings.Index(string(dest), string(pattern))
 			keyend := keystart + len(pattern)
 
-			start := buf[0:keystart]
-			end := buf[keyend:]
+			start := dest[0:keystart]
+			end := dest[keyend:]
 
-			w = copy(dest[0:], start)
-			w += copy(dest[w:], val)
-			w += copy(dest[w:], end)
+			w = copy(buf[0:], start)
+			w += copy(buf[w:], val)
+			w += copy(buf[w:], end)
 
-			buf = make([]byte, w)
-			copy(buf[0:], dest[0:w])
+			dest = make([]byte, w)
+
+			copy(dest[0:], buf[0:w])
 		}
 	}
 
-	return buf, err
+	return dest, err
 }
 
 func SubstituteMap(str string, keyval map[string]string, delim string) (string, error) {

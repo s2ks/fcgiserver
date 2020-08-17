@@ -2,7 +2,14 @@ package util
 
 import (
 	"testing"
+	"github.com/s2ks/fcgiserver/logger"
 )
+
+func Test0(t *testing.T) {
+	logger.LogLevel(logger.LogLevelDebug)
+
+	logger.Debug("Init")
+}
 
 func TestSub1(t *testing.T) {
 	str, err := Substitute("%WORD% World", "WORD", "Hello", "%")
@@ -46,5 +53,22 @@ func TestSub4(t *testing.T) {
 
 	if raw != str && err != nil {
 		t.Errorf("TestSub4 failed")
+	}
+}
+
+func TestSub5(t *testing.T) {
+	keyval := make(map[string]string)
+
+	keyval["KEY"] = "key"
+
+	dest, err := SubstituteMap("%KEY% %KEY% %KEY% %KEY%", keyval, "%")
+
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	if string(dest) != "key key key key" {
+		t.Error("TestSub5 failed")
 	}
 }
