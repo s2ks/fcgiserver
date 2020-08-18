@@ -28,10 +28,10 @@ func LogBody(r *http.Request, l uint64) {
 
 func InternalServerError(w http.ResponseWriter, r *http.Request, err error) {
 	http.Error(w, "Internal server error", http.StatusInternalServerError)
-	logger.Error("Error while serving %s - %v", r.URL.Path, r)
+	logger.Errorf("Error while serving %s - %v", r.URL.Path, err)
 }
 
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	http.NotFound(w, r)
-	logger.Error("%s not found (404)", r.URL.Path)
+	logger.Errorf("%s not found (404)", r.URL.Path)
 }
