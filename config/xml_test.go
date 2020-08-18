@@ -29,7 +29,7 @@ const (
 )
 
 func TestXml1(t *testing.T) {
-	conf, err := GetUserConfFromXml([]byte(xml1))
+	conf, err := GetUserXmlFrom([]byte(xml1))
 
 	if err != nil {
 		t.Error(err)

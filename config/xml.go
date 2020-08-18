@@ -9,13 +9,6 @@ import (
 
 /* Defines structures to unmarshal from xml config file */
 
-type VarXml struct {
-	Items []struct {
-		Name  string `xml:"name,attr"`
-		Value string `xml:",innerxml"`
-	} `xml:"item"`
-}
-
 type NetXml struct {
 	Address  string `xml:"address"`
 	Port     string `xml:"port"`
@@ -36,13 +29,11 @@ type VarsXml struct {
 }
 
 type UserXml struct {
-	XMLName xml.Name `xml:"user"`
-	Raw     []byte   `xml:",innerxml"`
-}
-
-type UserConf struct {
 	XMLName xml.Name `xml:"server"`
-	User    UserXml
+	User struct {
+		XMLName xml.Name `xml:"user"`
+		Raw []byte `xml:",innerxml"`
+	}
 }
 
 func GetVarsFromXml(raw []byte) (*VarsXml, error) {
@@ -131,19 +122,19 @@ func GetUserXmlFrom(raw []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	userConf := new(UserConf)
+	userXml := new(UserXml)
 
 	logger.Debugf("Getting raw user inner xml from: %s", buf)
 
 	/* Get the raw inner xml of <user> */
-	err = xml.Unmarshal(buf, userConf)
+	err = xml.Unmarshal(buf, userXml)
 
 	if err != nil {
 		return nil, err
 	}
 
 	/* Re-add <user> tags */
-	dest, err := xml.Marshal(userConf.User)
+	dest, err := xml.Marshal(userXml.User)
 
 	if err != nil {
 		return nil, err
