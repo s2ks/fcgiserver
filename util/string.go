@@ -6,7 +6,6 @@ import (
 )
 
 func ByteSubstituteMap(raw []byte, keyval map[string]string, delim string) ([]byte, error) {
-	var err error
 
 	dest := make([]byte, len(raw))
 	copy(dest, raw)
@@ -20,7 +19,6 @@ func ByteSubstituteMap(raw []byte, keyval map[string]string, delim string) ([]by
 		keycount := strings.Count(string(dest), string(pattern))
 
 		if keycount < 1 {
-			err = fmt.Errorf("Pattern: \"%v\" not found in string: \"%v\"", string(pattern), string(dest))
 			continue
 		}
 
@@ -51,7 +49,7 @@ func ByteSubstituteMap(raw []byte, keyval map[string]string, delim string) ([]by
 		}
 	}
 
-	return dest, err
+	return dest, nil
 }
 
 func SubstituteMap(str string, keyval map[string]string, delim string) (string, error) {
