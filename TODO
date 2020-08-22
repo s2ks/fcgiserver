@@ -1,3 +1,7 @@
 support for user <include> tag in xml config
 session helpers/abstractions
 form handler
+
+etag generation for caching purposes
+
+improve error reporting in util/string.go:ByteSubstituteMap()
