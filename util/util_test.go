@@ -7,8 +7,6 @@ import (
 
 func Test0(t *testing.T) {
 	logger.LogLevel(logger.LogLevelDebug)
-
-	logger.Debug("Init")
 }
 
 func TestSub1(t *testing.T) {
@@ -70,5 +68,23 @@ func TestSub5(t *testing.T) {
 
 	if string(dest) != "key key key key" {
 		t.Error("TestSub5 failed")
+	}
+}
+
+func TestBuffer1(t *testing.T) {
+	var buf *Buffer
+
+	buf = new(Buffer)
+
+	buf.Write([]byte("Hello world"))
+
+	if string(buf.Bytes()) != "Hello world" {
+		t.Error("TestBuffer1 failed (stage 1)")
+	}
+
+	buf.Write([]byte(", I hope you are doing well"))
+
+	if string(buf.Bytes()) != "Hello world, I hope you are doing well" {
+		t.Error("TestBuffer1 failed (stage 2)")
 	}
 }
