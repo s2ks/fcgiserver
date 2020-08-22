@@ -27,7 +27,8 @@ func (s *FcgiServer) Register(path string, h Handler) {
 	err := h.Setup(path)
 
 	if err != nil {
-		logger.Fatal(err)
+		logger.Error(err)
+		return
 	}
 
 	mux.Handle(path, h)
@@ -51,11 +52,12 @@ func New(address string, port string, protocol string) (*FcgiServer, error) {
 func (s *FcgiServer) Serve() error {
 	listener, err := net.Listen(s.Protocol, fmt.Sprintf("%s:%s", s.Address, s.Port))
 
-	defer listener.Close()
 
 	if err != nil {
 		return err
 	}
+
+	defer listener.Close()
 
 	handler := s.ServeMux
 
